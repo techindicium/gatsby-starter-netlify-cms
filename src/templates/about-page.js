@@ -4,7 +4,7 @@ import { graphql } from 'gatsby'
 import Layout from '../components/Layout'
 import Content, { HTMLContent } from '../components/Content'
 
-export const AboutPageTemplate = ({ title, content, contentComponent }) => {
+export const AboutPageTemplate = ({ title, content, subContent, contentComponent }) => {
   const PageContent = contentComponent || Content
 
   return (
@@ -17,10 +17,13 @@ export const AboutPageTemplate = ({ title, content, contentComponent }) => {
                 {title}
               </h2>
               <PageContent className="content" content={content} />
+              <br/>
+              <br/>
+              <PageContent className="content" content={subContent} />
             </div>
           </div>
         </div>
-      </div>
+        </div>
     </section>
   )
 }
@@ -28,6 +31,7 @@ export const AboutPageTemplate = ({ title, content, contentComponent }) => {
 AboutPageTemplate.propTypes = {
   title: PropTypes.string.isRequired,
   content: PropTypes.string,
+  subContent: PropTypes.string,
   contentComponent: PropTypes.func,
 }
 
@@ -39,7 +43,8 @@ const AboutPage = ({ data }) => {
       <AboutPageTemplate
         contentComponent={HTMLContent}
         title={post.frontmatter.title}
-        content={post.html}
+        content={post.frontmatter.body_front}
+        subContent={post.frontmatter.euquefiz}
       />
     </Layout>
   )
@@ -54,9 +59,10 @@ export default AboutPage
 export const aboutPageQuery = graphql`
   query AboutPage($id: String!) {
     markdownRemark(id: { eq: $id }) {
-      html
       frontmatter {
         title
+        euquefiz
+        body_front
       }
     }
   }
